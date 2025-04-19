@@ -1,0 +1,36 @@
+@startuml
+title List of Agents Grouped by Store and Sorted Alphabetically
+
+autoactivate on
+autonumber
+
+actor "Network Manager" as User
+participant ":GetAgentListView" as View
+participant ":GetAgentListController" as Controller
+participant ":Company" as Company
+participant ":StoreContainer" as Container
+participant ":Store" as Store
+participant "agents:Agents" as Agents
+
+activate User
+
+
+User->View: requests to get a list of agents
+View->Controller: listAgents()
+Controller -> Company: getStoreContainer()
+Company --> Controller: container
+Controller -> Container: getSortedAgentList()
+loop for each 'Store' in 'store container'
+Container -> Store:getAgents()
+Store --> Container: agents
+Container -> Agents: getSortedAgents()
+Agents --> Container: sortedList
+Container -> Container: concatenate(sortedList)
+end loop
+Container --> Controller: list
+Controller --> View: list
+View --> User: shows list of agents ordered
+
+
+
+@enduml

@@ -1,0 +1,314 @@
+{
+	"id": "cd17de27-7837-4e5d-928e-686b7d8e478a",
+	"name": "LETI-ESOFT-DHMS",
+	"timestamp": "2025-01-12T23:40:31.118Z",
+	"collection_id": "39416706-690b4713-b92f-45e6-9239-0a1a866b1ee7",
+	"folder_id": 0,
+	"environment_id": "0",
+	"totalPass": 8,
+	"delay": 0,
+	"persist": true,
+	"status": "finished",
+	"startedAt": "2025-01-12T23:40:29.979Z",
+	"totalFail": 0,
+	"results": [
+		{
+			"id": "c7630dc4-f1eb-4ef2-95b2-8938aa9274cf",
+			"name": "Advertisements - Empty",
+			"url": "localhost:8080/advertisements",
+			"time": 4,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Creating Store Status": true
+			},
+			"testPassFailCounts": {
+				"Creating Store Status": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				4
+			],
+			"allTests": [
+				{
+					"Creating Store Status": true
+				}
+			]
+		},
+		{
+			"id": "f191ab30-bde2-41d7-8ed3-057b689a089d",
+			"name": "All Advertisements - not Authenticated",
+			"url": "localhost:8080/stores",
+			"time": 17,
+			"responseCode": {
+				"code": 401,
+				"name": "Unauthorized"
+			},
+			"tests": {
+				"Creating Store Status": true
+			},
+			"testPassFailCounts": {
+				"Creating Store Status": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				17
+			],
+			"allTests": [
+				{
+					"Creating Store Status": true
+				}
+			]
+		},
+		{
+			"id": "c4547129-39d4-4981-95bb-9b21c9b9042f",
+			"name": "Advertisement - No client",
+			"url": "localhost:8080/advertisements",
+			"time": 17,
+			"responseCode": {
+				"code": 400,
+				"name": "Bad Request"
+			},
+			"tests": {
+				"Creating Advertisement Status": true
+			},
+			"testPassFailCounts": {
+				"Creating Advertisement Status": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				17
+			],
+			"allTests": [
+				{
+					"Creating Advertisement Status": true
+				}
+			]
+		},
+		{
+			"id": "a22cb410-bdb5-43da-8ad0-c68f792b74b6",
+			"name": "Client - Valid",
+			"url": "localhost:8080/clients",
+			"time": 3,
+			"responseCode": {
+				"code": 201,
+				"name": "Created"
+			},
+			"tests": {},
+			"testPassFailCounts": {},
+			"times": [
+				3
+			],
+			"allTests": [
+				{}
+			]
+		},
+		{
+			"id": "fb63d681-4653-4b76-87d7-6efbb0b55b64",
+			"name": "Store - Valid",
+			"url": "localhost:8080/stores",
+			"time": 4,
+			"responseCode": {
+				"code": 201,
+				"name": "Created"
+			},
+			"tests": {
+				"Creating Store Status": true
+			},
+			"testPassFailCounts": {
+				"Creating Store Status": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				4
+			],
+			"allTests": [
+				{
+					"Creating Store Status": true
+				}
+			]
+		},
+		{
+			"id": "1784ea47-e2d8-430a-ab34-1133041d12b8",
+			"name": "Agent - Valid",
+			"url": "localhost:8080/agents",
+			"time": 4,
+			"responseCode": {
+				"code": 201,
+				"name": "Created"
+			},
+			"tests": {},
+			"testPassFailCounts": {},
+			"times": [
+				4
+			],
+			"allTests": [
+				{}
+			]
+		},
+		{
+			"id": "55f1f7eb-05cc-41d6-aa8d-a8ec6c2a3955",
+			"name": "Advertisement - Valid",
+			"url": "localhost:8080/advertisements",
+			"time": 17,
+			"responseCode": {
+				"code": 201,
+				"name": "Created"
+			},
+			"tests": {
+				"Creating Store Status": true
+			},
+			"testPassFailCounts": {
+				"Creating Store Status": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				17
+			],
+			"allTests": [
+				{
+					"Creating Store Status": true
+				}
+			]
+		},
+		{
+			"id": "0116b512-7f7c-4e71-b567-70eda853b958",
+			"name": "All Advertisements",
+			"url": "localhost:8080/advertisements",
+			"time": 16,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Creating Store Status": true
+			},
+			"testPassFailCounts": {
+				"Creating Store Status": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				16
+			],
+			"allTests": [
+				{
+					"Creating Store Status": true
+				}
+			]
+		},
+		{
+			"id": "2cbdf347-84b4-4246-9025-c56e56be781b",
+			"name": "One Advertisement",
+			"url": "localhost:8080/stores",
+			"time": 2,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Creating Store Status": true
+			},
+			"testPassFailCounts": {
+				"Creating Store Status": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				2
+			],
+			"allTests": [
+				{
+					"Creating Store Status": true
+				}
+			]
+		},
+		{
+			"id": "db0d25c6-6b87-4eea-9c45-cd2cb26c045a",
+			"name": "Advertisement",
+			"url": "localhost:8080/advertisements/2",
+			"time": 17,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Creating Store Status": true
+			},
+			"testPassFailCounts": {
+				"Creating Store Status": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				17
+			],
+			"allTests": [
+				{
+					"Creating Store Status": true
+				}
+			]
+		}
+	],
+	"count": 1,
+	"totalTime": 101,
+	"collection": {
+		"requests": [
+			{
+				"id": "c7630dc4-f1eb-4ef2-95b2-8938aa9274cf",
+				"method": "GET"
+			},
+			{
+				"id": "f191ab30-bde2-41d7-8ed3-057b689a089d",
+				"method": "GET"
+			},
+			{
+				"id": "c4547129-39d4-4981-95bb-9b21c9b9042f",
+				"method": "POST"
+			},
+			{
+				"id": "a22cb410-bdb5-43da-8ad0-c68f792b74b6",
+				"method": "POST"
+			},
+			{
+				"id": "fb63d681-4653-4b76-87d7-6efbb0b55b64",
+				"method": "POST"
+			},
+			{
+				"id": "1784ea47-e2d8-430a-ab34-1133041d12b8",
+				"method": "POST"
+			},
+			{
+				"id": "55f1f7eb-05cc-41d6-aa8d-a8ec6c2a3955",
+				"method": "POST"
+			},
+			{
+				"id": "0116b512-7f7c-4e71-b567-70eda853b958",
+				"method": "GET"
+			},
+			{
+				"id": "2cbdf347-84b4-4246-9025-c56e56be781b",
+				"method": "GET"
+			},
+			{
+				"id": "db0d25c6-6b87-4eea-9c45-cd2cb26c045a",
+				"method": "DELETE"
+			}
+		]
+	}
+}

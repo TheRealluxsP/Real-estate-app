@@ -1,0 +1,33 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+hide circle
+skinparam ClassAttributeIconSize 0
+hide methods
+skinparam ranksep 50
+skinparam nodesep 70
+
+class Agent {
+  name
+  idNumber
+  email
+  contactNumber
+}
+
+class Property {
+  area
+  location
+  distanceCenter
+}
+
+class PropertyPurchaseOrder {
+  orderId
+  orderDate
+  status
+  isEvaluated
+}
+
+Agent "1" - "1..*" PropertyPurchaseOrder : evaluates >
+PropertyPurchaseOrder "1" - "1" Property : involves >
+
+@enduml

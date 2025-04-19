@@ -1,0 +1,43 @@
+@startuml
+'https://plantuml.com/use-case-diagram
+
+title Use Case Diagram - First Draft
+
+left to right direction
+
+actor :Owner: as Owner
+actor :Client: as Client
+actor :Agent: as Agent
+actor :Manager: as Manager
+
+(UC03 - Publish an offer) as (PublishOffer)
+(UC04 - Register visit schedule) as (RegisterVisit)
+(UC05 - Appreciate an offer) as (AppreciateOffer)
+(UC06 - Define commission) as (DefineCommission)
+(UC01 - Register Branches) as (RegisterBranches)
+(UC02 - Register Agent) as (RegisterAgent)
+(UC08 - Registration) as (Registration)
+(UC07 - Make a lease/sale offer) as (MakeSaleOffer)
+(UC09 - Consult Properties) as (ConsultProperties)
+(UC10 - Request a visit schedule) as (RequestSchedule)
+(UC11 - Make a purchase/lease request) as (MakeRequest)
+
+Agent --> (PublishOffer)
+Agent --> (RegisterVisit)
+Agent --> (AppreciateOffer)
+Agent --> (DefineCommission)
+
+Manager --> (RegisterBranches)
+Manager --> (RegisterAgent)
+
+Client -->(Registration)
+
+Client -->(ConsultProperties)
+Client -->(RequestSchedule)
+Client -->(MakeRequest)
+
+Owner -->(Registration)
+Owner -->(MakeSaleOffer)
+
+
+@enduml

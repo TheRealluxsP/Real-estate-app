@@ -1,0 +1,43 @@
+@startuml
+hide circle
+skinparam classAttributeIconSize 0
+
+title Class Diagram for Listing Agents Grouped by Store
+
+class GetAgentListView {
+}
+
+class StoreContainer {
+    +getAll(): List<Store>
+    +getSortedAgentList(): List<Agent>
+}
+
+class Store {
+    +getAgents(): List<Agent>
+    +getDesignation(): string
+}
+
+class Agent {
+    -id: string
+    -name: string
+    -email: string
+    -phoneNumber: string
+    +getName(): string
+    +setStore(Store*): void
+    +getStore(): Store*
+}
+
+class GetAgentListController {
+    +fetchAgents(): List<Agent>
+}
+
+class Company {
+    +getStoreContainer(): StoreContainer*
+}
+
+GetAgentListView ..left..> GetAgentListController
+GetAgentListController ..> Company
+Company ..> StoreContainer
+StoreContainer ..left..> Store
+Store ..> Agent
+@enduml

@@ -1,0 +1,20 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+title System Sequence Diagram for Visit Booking Confirmation
+
+autoactivate on
+autonumber
+
+actor "Agent" as Agent
+participant ":System" as System
+
+activate Agent
+
+Agent -> System: Request list of unanswered visit booking requests
+System --> Agent: Provide list of unanswered visit booking requests
+
+Agent -> System: Select a request and send confirmation
+System -> System: Save response and update request status
+System --> Agent: Return confirmation of successful operation
+@enduml

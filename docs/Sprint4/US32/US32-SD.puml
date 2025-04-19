@@ -1,0 +1,73 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+title US32: Place order to purchase/lease property
+
+autoactivate on
+autonumber
+
+actor "Client" as User
+participant ":PurchaseOfferView" as UI
+participant ":PurchaseOfferController" as Ctrl
+participant ":Company" as Company
+participant "factory:RepositoryFactory" as Repo
+participant "advService:AdvertisementService" as AdvService
+participant "repo:AdvertisementRepository" as Repository
+participant "purchaseOfferService: PurchaseOfferService" as OfferService
+participant "purchaseOffer:PurchaseOffer" as PurchaseOffer
+participant "purchaseOfferRepo:PurchaseOfferRepository" as OfferRepo
+
+
+
+
+
+activate User
+
+
+User->UI: selects property to purchase/lease
+UI->Ctrl: getAdvByCode(code)
+Ctrl->Company: getAdvertisementService()
+Company->Repo:getAdvertisementRepository()
+Repo-->Company: advRepo
+Company->AdvService**: create(advRepo)
+Company-->Ctrl: advService
+Ctrl->AdvService: getAdvertisement(code)
+AdvService->Repository: getById(code)
+Repository-->AdvService: adv
+AdvService-->Ctrl: adv
+Ctrl-->UI: ok
+UI-->User: asks value of the offer
+
+
+User->UI: types value of the offer
+UI->Ctrl: createOffer(value, clientCode)
+Ctrl->Company: getPurchaseOfferService()
+Company-> Repo: getPurchaseOfferRepository()
+Repo-->Company: purchaseOfferRepo
+Company->OfferService**: create(purchaseOfferRepo)
+Company-->Ctrl: purchaseOfferService
+Ctrl->OfferService:createPurchaseOffer(value,adv,clientCode)
+OfferService->PurchaseOffer**: create(value,adv,clientCode)
+OfferService->OfferService: validate(purchaseOffer)
+OfferService-->OfferService: ok
+OfferService-> OfferRepo: save(purchaseOffer)
+OfferRepo-->OfferService: ok
+OfferService-->Ctrl: ok
+Ctrl-->UI: ok
+UI-->User: informs operation success
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@enduml

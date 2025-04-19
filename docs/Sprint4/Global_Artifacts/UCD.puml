@@ -1,0 +1,46 @@
+@startuml
+'https://plantuml.com/use-case-diagram
+
+title Use Case Diagram - First Draft
+
+left to right direction
+
+actor :Unregistered User: as unreg
+actor :Client: as Client
+actor :Agent: as Agent
+actor :Network Manager: as Manager
+actor :System Administrator: as Administrator
+
+(UC10 - Register store) as (RegisterStore)
+(UC11 - Register agent) as (RegisterAgent)
+(UC21 - Register client) as (RegisterClient)
+(UC51 - Retrieve List of Agents) as (retrieveAgents)
+
+(UC20 - Display listed Properties) as (displayProps)
+(UC30 - Request to List Property for Sale or Rent) as (listProp)
+(UC31 - Request Visit Booking) as (requestVisit)
+(UC40 - Publish Advertisement) as (publishAdv)
+
+(UC32 - Place purchase/lease order) as (placeOrder)
+(UC41 - Reply to a visit request) as (replyRequest)
+(UC42 - Evaluate purchase/lease order) as (evaluateOrder)
+(UC50 - List all deals made) as (listAllDeals)
+
+Administrator --> (RegisterStore)
+Administrator --> (RegisterAgent)
+unreg --> (RegisterClient)
+Manager --> (retrieveAgents)
+
+unreg --> (displayProps)
+Client --> (listProp)
+Client -->(requestVisit)
+Agent -->(publishAdv)
+
+Client -->(placeOrder)
+Agent -->(replyRequest)
+Agent -->(evaluateOrder)
+Manager -->(listAllDeals)
+
+
+
+@enduml

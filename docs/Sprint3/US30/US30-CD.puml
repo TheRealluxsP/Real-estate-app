@@ -1,0 +1,135 @@
+@startuml
+
+hide circle
+skinparam classAttributeIconSize 0
+
+class Client {
+}
+
+class ListPropertyView {
+}
+
+class ListPropertyController {
+    +createLand(dto: LandDTO)
+    +createApartment(dto: ApartmentDTO)
+    +createHouse(dto: HouseDTO)
+    +getAgentService()
+    +getAdvertisementService()
+}
+
+class Land {
+    Land(area: string, location: string, distance: string, price: float, photograph: string)
+}
+
+class Apartment {
+    Apartment(area: string, location: string, distance: string, price: float, photograph: string, bedrooms: int, bathrooms: int, parkingSpaces: int, availableEquipment: string)
+}
+
+class House {
+    -existenceBasement: boolean
+    -habittableAttic: boolean
+    -sunExposure: boolean
+    House(area: string, location: string, distance: string, price: float, photograph: string, bedrooms: int, bathrooms: int, parkingSpaces: int, availableEquipment: string, basement: boolean, attic: boolean, sunExposure: string)
+}
+
+class LandMapper {
+    +toModel(dto: LandDTO): Land
+}
+
+class ApartmentMapper {
+    +toModel(dto: ApartmentDTO): Apartment
+}
+
+class HouseMapper {
+    +toModel(dto: HouseDTO): House
+}
+
+class AgentService {
+    +getAll()
+    +getAgentById(id: int)
+}
+
+class AdvertisementService {
+    +createAdv(typeProperty: string, typeBusiness: string, price: float, property: Property)
+    +save(adv: Advertisement)
+    +validate(adv: Advertisement)
+}
+
+class Advertisement {
+    Advertisement(typeProperty: string, typeBusiness: string, price: float, property: Property)
+}
+
+class AgentRepository {
+    +getAll(): List<Agent>
+    +getAgentById(id: int): Agent
+}
+
+class AdvertisementRepository {
+    +save(adv: Advertisement)
+}
+
+class RepositoryFactory {
+    +getAgentRepository(): AgentRepository
+    +getAdvertisementRepository(): AdvertisementRepository
+}
+
+class Company {
+    +getAgentService(): AgentService
+    +getAdvertisementService(): AdvertisementService
+}
+
+
+class Agent {
+    +id: int
+    +name: string
+    +contactInfo: string
+}
+
+class AgentMapper {
+    +toDTO(agent: Agent): AgentDTO
+}
+
+class Property{
+    -area
+    -location
+    -distanceCenter
+}
+
+class Residency{
+    -numberBedrooms
+    -numberBathrooms
+    -parkingSpaces
+    -availableEquipment
+}
+
+
+ListPropertyView ..> ListPropertyController
+ListPropertyController ..> Land
+ListPropertyController ..> Apartment
+ListPropertyController ..> House
+ListPropertyController ..> AgentMapper
+ListPropertyController ..> HouseMapper
+ListPropertyController ..> ApartmentMapper
+ListPropertyController ..> LandMapper
+LandMapper ..> Land
+ApartmentMapper ..> Apartment
+HouseMapper ..> House
+ListPropertyController ..> Company
+Company ..> AgentService
+Company ..> AdvertisementService
+AgentService ..> AgentRepository
+AdvertisementService ..> AdvertisementRepository
+AdvertisementService ..> Advertisement
+AdvertisementRepository "1" --> "*"Advertisement : holds
+Client "1" --> "*" Property: owns
+Property <|-- Residency
+Property <|-- Land
+Residency <|-- House
+Residency <|-- Apartment
+Agent "1" --> "1..*" Advertisement: receives
+Company ..> RepositoryFactory
+RepositoryFactory ..> AdvertisementRepository
+RepositoryFactory ..> AgentRepository
+Client "1" --> "*" Advertisement: requests to list
+
+@enduml

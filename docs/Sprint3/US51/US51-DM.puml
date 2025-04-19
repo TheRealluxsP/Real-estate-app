@@ -1,0 +1,30 @@
+@startuml
+'https://plantuml.com/class-diagram
+hide circle
+skinparam classAttributeIconSize 0
+hide methods
+
+title Network Manager views agents grouped by store
+
+class NetworkManager {
+}
+
+class Agent {
+    name
+    idNumber
+    email
+    contactNumber
+}
+
+class Store {
+    code
+    designation
+    address
+    openingTime
+    closingTime
+}
+
+NetworkManager "1" -right- "1..*" Agent : views >
+Store "1" -down- "1..*" Agent : employs >
+
+@enduml

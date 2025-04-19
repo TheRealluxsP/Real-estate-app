@@ -1,0 +1,69 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+hide circle
+skinparam classAttributeIconSize 0
+
+title US20: Class Diagrams
+
+
+class DisplayListedPropertiesView{
+}
+
+class DisplayListedPropertiesController{
++getListedProperties()
+
+}
+
+class Company{
++getAdvertisementService()
++create()
+}
+
+class RepositoryFactory{
+getAdvertisementRepository()
+}
+
+class AdvertisementService{
++getAll()
++create(repo)
+}
+
+class Advertisement{
++getTypeBusiness()
++getTypeProperty()
++getPrice()
+}
+class AdvertisementRepository{
++getAll()
+}
+class Property{
++getArea()
++getLocation()
+}
+
+class Residency{
++getBedrooms()
++getBathrooms()
++getParkingSpaces()
+}
+
+class DisplayedPropertyMapper{
++toDTO(typeBusiness,typeProperty,price,area,location,bedrooms,bathrooms,parkingSpaces)
++createDTOList()
+}
+
+DisplayListedPropertiesView..>DisplayListedPropertiesController
+DisplayListedPropertiesController..>Company
+Company..>RepositoryFactory
+Company..>AdvertisementService
+DisplayListedPropertiesController..>AdvertisementService
+AdvertisementService..>AdvertisementRepository
+DisplayListedPropertiesController ..>Advertisement
+Advertisement-->Property
+DisplayListedPropertiesController..>DisplayedPropertyMapper
+Property <|-- Residency
+
+
+
+@enduml

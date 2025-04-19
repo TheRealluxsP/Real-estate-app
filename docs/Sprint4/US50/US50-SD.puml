@@ -1,0 +1,96 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+autoactivate on
+autonumber
+
+actor "Network Manager" as netManager
+participant ":ListDealsView" as UI
+participant ":ListDealsController" as Ctrl
+participant ":Company" as Company
+participant "factory:RepositoryFactory" as Factory
+participant "advService:AdvertisementService" as advService
+participant "advRepo:AdvertisementRepository" as advRepo
+participant ":AdvertisementMapper" as advMapper
+participant ":Advertisement" as adv
+participant "soldAdvList:List<Advertisement>" as soldAdvList
+participant "soldAdvListDTO:List<AdvertisementDTO>" AS soldAdvListDTO
+participant "advDto:AdvertisementDto"
+participant ":Agent" as agent
+participant ":StoreMapper" as storeMapper
+participant "storeDto:StoreDTO" as storeDTO
+participant ":PropertyMapper" as propertyMapper
+participant "propertyDto:PropertyDTO" as propDTO
+participant "storeGroupedAdsDTO:Map<StoreDTO,Map<typeBusiness, List<AdvertisementDTO>>>" as storeGroupedAds
+
+activate netManager
+
+netManager -> UI: asks to list all deals made
+UI -> Ctrl: getAllDealsGroupedByStore()
+
+Ctrl -> Company: getAdvertisementService()
+Company -> Factory: getAdvertisementRepository()
+Factory --> Company: repo
+Company -> advService**: create(repo)
+Company-->Ctrl: service
+
+Ctrl -> advService: getAllDealsMade()
+advService -> advRepo: getAll()
+advRepo --> advService: advList
+
+advService --> soldAdvList**: create()
+
+loop for each advertisement in advList
+advService -> adv: isAdvertisementSold()
+adv --> advService: isSold
+opt isSold attribute is true
+advService -> soldAdvList: add(adv)
+deactivate
+end opt
+end loop
+
+advService --> Ctrl: soldAdvList
+Ctrl -> advMapper: toDTO(soldAdvList)
+advMapper --> soldAdvListDTO**:create()
+loop for each advertisement in soldAdvList
+advMapper -> soldAdvList: adv = get(i)
+deactivate
+advMapper -> adv: getStoreByAgent()
+adv -> agent: getStore()
+agent --> adv: store
+adv --> advMapper: store
+advMapper -> storeMapper: toDTO(store)
+storeMapper -> storeMapper: storeDto = toDTO(store)
+storeMapper --> storeDTO**: create(code,\n designation,\n revenue)
+deactivate
+storeMapper --> advMapper: storeDto
+advMapper -> adv: getProperty()
+adv --> advMapper: property
+advMapper -> propertyMapper: toDTO(property)
+propertyMapper -> propertyMapper: propertyDto = toDTO(property)
+propertyMapper --> propDTO**: create(code, area,\n location, distanceCenter,\n photograph)
+deactivate
+propertyMapper --> advMapper: propertyDto
+advMapper->advMapper: advDto = toDTO(adv)
+advMapper --> "advDto:AdvertisementDto"**: create(typeProperty, typeBusiness,\n price, propertyDto, storeDto, commission)
+deactivate
+advMapper -> soldAdvListDTO:add(advDTO)
+deactivate soldAdvListDTO
+
+end loop
+advMapper --> Ctrl: soldAdvListDTO
+
+Ctrl -> advService: getAllDealsGroupedByStore(soldAdvListDTO)
+advService --> storeGroupedAds**: create()
+
+loop for each advDTO in soldAdvListDTO
+advService -> storeGroupedAds: add(advDTO->storeDTO, advDTO->typeBusiness, advDTO)
+deactivate
+end loop
+
+
+advService --> Ctrl: storeGroupedAdsDTO
+Ctrl --> UI: storeGroupedAdsDTO
+UI --> netManager: shows list of deals made
+
+@enduml

@@ -1,0 +1,46 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+title US40: Publish Advertisement
+
+autoactivate on
+autonumber
+
+actor "Agent" as User
+participant ":AgentView" as View
+participant ":PublishAdvertisementController" as Ctrl
+participant ":AdvertisementRepository" as Repo
+participant ":DatabaseAdapter" as Adapter
+participant ":AdvertisementFactory" as Factory
+participant ":Advertisement" as Ad
+participant ":Property" as Property
+
+activate User
+
+User -> View: Request unpublished advertisements
+View -> Ctrl: retrieveAdvertisements(agentId)
+Ctrl -> Repo: findUnpublishedByAgent(agentId)
+Repo -> Adapter: query("SELECT * FROM advertisements WHERE unpublished AND agentId = ?")
+Adapter --> Repo: ResultSet
+Repo --> Ctrl: List<AdvertisementDTO>
+Ctrl --> View: List of advertisements
+
+User -> View: Select an advertisement to publish
+View -> Ctrl: publishAdvertisement(adDTO)
+Ctrl -> Factory: createAdvertisement(adDTO)
+Factory --> Ctrl: Advertisement
+
+' Interaction Between Advertisement and Property
+Ctrl -> Property: getDetails(propertyId)
+Property --> Ctrl: Property Details
+Ctrl -> Ad: associateWithProperty(propertyDetails)
+
+' Save Advertisement with Property Data
+Ctrl -> Repo: save(ad)
+Repo -> Adapter: execute("UPDATE advertisements SET published = true WHERE id = ?")
+Adapter --> Repo: success
+Repo --> Ctrl: confirmation
+Ctrl --> View: Publication success message
+View --> User: Display confirmation
+
+@enduml

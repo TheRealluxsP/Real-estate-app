@@ -1,0 +1,45 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+autoactivate on
+autonumber
+
+participant ":HTTPClient" as HTTPClient
+participant "handler:RouteHandler" as System
+participant ":AgentController" as Ctrl
+participant ":Company" as Company
+participant "service:AgentService" as Service
+participant "factory:RepositoryFactory" as Factory
+participant "repo:AgentRepository" as Repo
+participant "agent:Agent" as Store
+participant "result:HttpResult" as Result
+
+activate HTTPClient
+
+HTTPClient -> System: POST/agents(data)
+
+note over System: after doing some stuff
+
+System -> Ctrl: postAgent(name, idNumber, email, phoneNumber, store)
+Ctrl -> Company: getAgentService()
+Company -> Factory : getAgentRepository()
+Factory --> Company: repo
+Company -->Service**: create(repo)
+Company --> Ctrl: service
+Ctrl -> Service: create(name, idNumber, email,\n phoneNumber, store)
+Service --> Store**: create(name, idNumber, email,\n phoneNumber, store)
+Service --> Ctrl: agent
+Ctrl -> Service: addOrUpdate(agent)
+Service -> Service : validate(agent)
+Service --> Service : ok
+Service -> Repo: save(agent)
+Repo --> Service : ok
+Service --> Ctrl: ok
+Ctrl --> Result**: create(201)
+Ctrl --> System: result
+System -> System: setHttpResult(resp, result)
+System --> System:
+System --> HTTPClient: resp
+
+
+@enduml

@@ -1,0 +1,46 @@
+plantuml
+@startuml
+
+hide circle
+skinparam ClassAttributeIconSize 0
+hide methods
+skinparam ranksep 50
+skinparam nodesep 70
+
+title Relevant Domain Model for Visit Booking Requests
+
+class Agent {
+  name
+  idNumber
+  email
+  contactNumber
+}
+
+class Visit {
+  selectedDate
+  status
+}
+
+class Property {
+  area
+  location
+  distanceCenter
+}
+
+class Client {
+  name
+  email
+  contactNumber
+}
+
+class Date {
+  date
+  time
+}
+
+Agent "1" -right- "1..*" Visit : manages >
+Visit "1" -down- "1" Property : linked to >
+Visit "1" -down- "1..*" Date : scheduled on >
+Client "1" -down- "1..*" Visit : requests >
+
+@enduml

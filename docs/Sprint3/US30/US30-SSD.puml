@@ -1,0 +1,20 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+autoactivate on
+autonumber
+
+actor "Client" as Client
+participant ":System" as System
+
+activate Client
+
+Client -> System: requests to list a property
+System --> Client: asks for property data
+
+Client -> System: types requested data
+System --> Client: shows list of all agents to promote the property
+
+Client -> System: chooses an id
+System --> Client: informs operation sucess
+@enduml

@@ -1,0 +1,38 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+hide circle
+skinparam classAttributeIconSize 0
+
+class RegisterStoreView{}
+
+class RegisterStoreController{
+    +registerStore(string code, string designation, string address, string openingTime, string closingTime): Result
+}
+
+class Company{
+    +getStoreContainer(): StoreContainer
+}
+
+class StoreContainer{
+    +createStore(string code, string designation, string address, string openingTime, string closingTime): Store
+}
+
+class Store{
+    -code
+    -designation
+    -address
+    -openingTime
+    -closingTime
+    Store(string code, string designation, string address, string openingTime, string closingTime)
+}
+
+Company "1" -right-> "1" StoreContainer: maintains
+StoreContainer "1" -right-> "0..*" Store: records
+
+RegisterStoreView ..> RegisterStoreController
+RegisterStoreController ..> Company
+RegisterStoreController ..> StoreContainer
+RegisterStoreController ..> Store
+
+@enduml

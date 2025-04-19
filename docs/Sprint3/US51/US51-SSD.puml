@@ -1,0 +1,16 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+title List of Agents
+
+autoactivate on
+autonumber
+
+actor "Network Manager" as User
+participant ":System" as System
+
+activate User
+
+User -> System: Request list of agents
+System --> User: Return sorted agents list
+@enduml

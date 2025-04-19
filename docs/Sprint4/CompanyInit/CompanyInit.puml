@@ -1,0 +1,32 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+autoactivate on
+autonumber
+
+participant "{XXX}Controller" as CTRL
+participant "Company" as CMP
+participant "companyInstance:Company" as CMPOBJ
+participant "cfgReader:ConfigFileReader" as READER
+participant "cfgOptions:ConfigObject" as CFG
+participant "factory:MemoryRepositoryFactory" as MEM_FACTORY
+activate CTRL
+
+CTRL -> CMP: GetInstance()
+opt cmpInstance == null
+CMP -->CMPOBJ**: create()
+activate CMPOBJ
+CMPOBJ --> READER**:create()
+CMPOBJ -> READER: read_config("config.ini")
+READER --> CFG**: create()
+READER --> CMPOBJ: cfgOptions
+
+alt cfgOption.persitenceMode == "memory"
+CMPOBJ --> MEM_FACTORY**: create()
+else
+note over CMPOBJ: more options must be handled too
+end
+CMP --> CTRL: cmpInstance
+
+note over CTRL, PERSON : Further Interactions between the controller and person
+@enduml

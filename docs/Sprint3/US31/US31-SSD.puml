@@ -1,0 +1,13 @@
+@startuml
+title Visit Scheduling - Simplified Sequence Diagram
+
+autoactivate on
+autonumber
+
+actor "Client" as Client
+participant ":System" as System
+
+Client -> System: Select date and hour
+System --> Client: Confirmation of booking
+
+@enduml

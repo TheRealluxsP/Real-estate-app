@@ -1,0 +1,76 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+autoactivate on
+autonumber
+
+actor "Agent" as agent
+participant ":ListOrdersView" as UI
+participant ":ListOrdersController" as Ctrl
+participant ":Company" as Company
+participant ":OrderRepositoryFactory" as Factory
+participant ":OrderService" as orderService
+participant ":OrderRepository" as orderRepo
+participant ":OrderMapper" as orderMapper
+participant ":Order" as order
+participant ":OrderDTO" as orderDTO
+participant ":OrderListDTO" as orderListDTO
+
+activate agent
+
+agent -> UI: asks to list assigned orders
+UI -> Ctrl: getAllOrdersAssignedToAgent()
+
+Ctrl -> Company: getOrderService()
+Company -> Factory: getOrderRepository()
+Factory --> Company: repo
+Company -> orderService: create(repo)
+Company --> Ctrl: service
+
+Ctrl -> orderService: getAssignedOrders()
+orderService -> orderRepo: getAllOrdersAssigned()
+orderRepo --> orderService: orderList
+
+orderService --> orderListDTO: create()
+
+loop for each order in list
+orderService -> order: getOrderDetails()
+order --> orderService: details
+orderService --> orderListDTO: add(orderDTO)
+deactivate
+end loop
+
+orderService --> Ctrl: orderListDTO
+Ctrl -> orderMapper: toDTO(orderListDTO)
+orderMapper --> orderListDTO: create()
+loop for each order in orderListDTO
+orderMapper -> orderListDTO: order = get(i)
+orderMapper -> order: getOrderDetails()
+order --> orderMapper: details
+orderMapper -> orderDTO: toDTO(order)
+orderDTO --> orderMapper: create(order.getDetails())
+deactivate
+orderMapper --> orderListDTO: add(orderDTO)
+end loop
+
+orderMapper --> Ctrl: orderListDTO
+Ctrl --> UI: shows list of orders assigned
+
+agent -> UI: selects order to evaluate
+UI -> Ctrl: getOrderDetailsForEvaluation()
+
+Ctrl -> orderService: getOrderDetailsForEvaluation(order)
+orderService --> orderDTO: details
+Ctrl --> UI: displays order details
+
+agent -> UI: evaluates order
+UI -> Ctrl: evaluateOrder(order)
+Ctrl -> orderService: evaluateOrder(order)
+orderService --> orderRepo: updateOrderStatus(evaluated)
+orderRepo --> orderService: confirmation
+
+orderService --> Ctrl: order evaluated confirmation
+Ctrl --> UI: shows evaluation result
+UI --> agent: shows evaluation result
+
+@enduml

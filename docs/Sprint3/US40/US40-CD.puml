@@ -1,0 +1,96 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+hide circle
+skinparam classAttributeIconSize 0
+
+title Updated Class Diagram for Publishing Advertisement (Sale or Rent) with Design Patterns
+
+' Domain Classes
+class Agent {
+    - name: String
+    - idNumber: String
+    - email: String
+    - contactNumber: String
+}
+
+class Advertisement {
+    - type: String
+    - price: Float
+    - visibility: String
+}
+
+class Property {
+    - area: Double
+    - location: String
+    - distanceCenter: Double
+}
+
+' Data Transfer Objects (DTOs)
+class AdvertisementDTO {
+    - type: String
+    - price: Float
+    - visibility: String
+    - property: PropertyDTO
+}
+
+class PropertyDTO {
+    - area: Double
+    - location: String
+    - distanceCenter: Double
+}
+
+' Repository Pattern
+class AdvertisementRepository {
+    - advertisements: List<Advertisement>
+    + findUnpublishedByAgent(agentId: String): List<AdvertisementDTO>
+    + save(ad: Advertisement): Boolean
+}
+
+' Adapter Pattern
+class DatabaseAdapter {
+    + query(queryString: String): List<ResultSet>
+    + execute(command: String): Boolean
+}
+
+' Factory Method
+class AdvertisementFactory {
+    + createAdvertisement(dto: AdvertisementDTO): Advertisement
+}
+
+' Mapper Classes
+class AdvertisementMapper {
+    + toDTO(ad: Advertisement): AdvertisementDTO
+    + toEntity(dto: AdvertisementDTO): Advertisement
+}
+
+class PropertyMapper {
+    + toDTO(property: Property): PropertyDTO
+    + toEntity(dto: PropertyDTO): Property
+}
+
+' Controller
+class PublishAdvertisementController {
+    + retrieveAdvertisements(agentId: String): List<AdvertisementDTO>
+    + publishAdvertisement(adDTO: AdvertisementDTO): Boolean
+}
+
+' View Layer
+class AgentView {
+}
+
+' Relationships
+AgentView ..> PublishAdvertisementController
+PublishAdvertisementController ..> AdvertisementMapper
+PublishAdvertisementController ..> AdvertisementRepository
+PublishAdvertisementController ..> AdvertisementFactory
+PublishAdvertisementController ..> PropertyMapper
+AdvertisementMapper -..> AdvertisementDTO
+PropertyMapper -..> PropertyDTO
+AdvertisementDTO --> PropertyDTO
+AdvertisementRepository ..> DatabaseAdapter
+AdvertisementFactory -right-> Advertisement : creates
+AdvertisementRepository "1" -- "0..*" Advertisement : manages
+Advertisement "1" --right-- "1" Property : has
+Advertisement "1" --left-- "1" Agent : chooses
+@enduml

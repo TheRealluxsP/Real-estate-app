@@ -1,0 +1,72 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+hide circle
+skinparam classAttributeIconSize 0
+
+class EvaluateOrderView {}
+
+class EvaluateOrderController {
+    +getUnevaluatedOrders(): List<PropertyPurchaseOrderDTO>
+    +submitEvaluation(orderId: int, status: bool): void
+}
+
+class Agent {
+    -name: string
+    -idNumber: string
+    -email: string
+    -contactNumber: string
+    -agentId: int
+}
+
+class Property {
+    -area: float
+    -location: string
+    -distanceFromCenter: float
+}
+
+class PropertyPurchaseOrder {
+    -orderId: int
+    -orderDate: Date
+    -status: string
+    -isEvaluated: bool
+    -property: Property
+    -agent: Agent
+}
+
+class PropertyPurchaseOrderMapper {
+    +toDTO(order: PropertyPurchaseOrder): PropertyPurchaseOrderDTO
+    +toEntity(dto: PropertyPurchaseOrderDTO): PropertyPurchaseOrder
+}
+
+class PropertyPurchaseOrderRepository <<interface>> {
+    +getOrdersByAgent(agentId: int): List<PropertyPurchaseOrder>
+    +updateOrder(order: PropertyPurchaseOrder): void
+}
+
+class PropertyPurchaseOrderService {
+    +getOrdersForAgent(agentId: int): List<PropertyPurchaseOrderDTO>
+    +evaluateOrder(orderId: int, status: bool): void
+}
+
+class PropertyPurchaseOrderDTO {
+    -orderId: int
+    -orderDate: Date
+    -status: string
+    -isEvaluated: bool
+    -propertyDetails: Property
+}
+
+EvaluateOrderView "1" ..> "1" EvaluateOrderController : interacts >
+EvaluateOrderController "1" ..> "1" PropertyPurchaseOrderService : invokes >
+EvaluateOrderController "1" ..> "*" PropertyPurchaseOrderDTO : displays >
+PropertyPurchaseOrderService "1" ..> "1" PropertyPurchaseOrderRepository : uses >
+PropertyPurchaseOrderService "1" ..> "*" PropertyPurchaseOrderMapper : transforms >
+PropertyPurchaseOrderRepository "1" -> "*" PropertyPurchaseOrder : stores >
+PropertyPurchaseOrderMapper "1" ..> "*" PropertyPurchaseOrder : maps from >
+PropertyPurchaseOrderMapper "1" ..> "*" PropertyPurchaseOrderDTO : maps to >
+PropertyPurchaseOrder "1" -- "1" Property : involves >
+PropertyPurchaseOrder "1" -- "1" Agent : evaluates <
+PropertyPurchaseOrderDTO "1" ..> "1" Property : contains >
+
+@enduml

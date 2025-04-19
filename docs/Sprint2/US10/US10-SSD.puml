@@ -1,0 +1,17 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+autoactivate on
+autonumber
+
+actor "System Administrator" as SysAdmin
+participant ":System" as System
+
+activate SysAdmin
+
+SysAdmin -> System: asks to register a new store
+System --> SysAdmin: requests data (code, designation,\n address, opening time, closing time)
+
+SysAdmin -> System: types requested data
+System --> SysAdmin:informs operation success
+@enduml

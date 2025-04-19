@@ -1,0 +1,22 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+title Register Agent System Sequence Diagram
+
+autoactivate on
+autonumber
+
+actor "Administrator" as User
+participant ":System" as System
+
+activate User
+
+User -> System: ask to register agent
+System --> User: shows list of stores and asks for store where agent is to be registered
+
+User -> System: selects store
+User <-- System: asks for details of agent to be registered
+
+User->System: Inputs details of agent
+System-->User: Returns success of operation
+@enduml

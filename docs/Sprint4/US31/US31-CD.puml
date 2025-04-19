@@ -1,0 +1,53 @@
+@startuml
+hide circle
+skinparam classAttributeIconSize 0
+
+title Class Diagram for US31 - Schedule Visit Booking
+
+class Client {
+  - name: String
+  - email: String
+  - contactNumber: String
+}
+
+class Visit {
+  - visitId: Integer
+  - date: String
+  - status: String
+}
+
+class VisitRepository {
+  + save(Visit)
+}
+
+class VisitFactory {
+  getVisitRepository()
+}
+
+class VisitService {
+  - repository: VisitRepository
+  + saveVisit(Visit)
+  + create(repo: VisitRepository)
+}
+
+class VisitBookingController {
+  - service: VisitService
+  + confirmDate()
+}
+
+class VisitMapper {
+  + toDTO(Visit): VisitDTO
+  + toEntity(VisitDTO): Visit
+}
+
+class ClientView {
+}
+
+ClientView ..> VisitBookingController
+VisitBookingController ..> VisitMapper
+VisitBookingController ..> VisitService
+VisitService ..> VisitRepository
+VisitRepository "1" --> "0..*" Visit : stores
+Visit "1..3" --right--> "1...*" Client : requested
+VisitService ..> VisitFactory
+@enduml

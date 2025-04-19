@@ -1,0 +1,332 @@
+{
+	"id": "27e0abeb-262e-4304-b59f-d5826fcd6c79",
+	"name": "LETI-ESOFT-DHMS",
+	"timestamp": "2025-01-08T09:24:52.794Z",
+	"collection_id": "39416706-690b4713-b92f-45e6-9239-0a1a866b1ee7",
+	"folder_id": 0,
+	"environment_id": "0",
+	"totalPass": 10,
+	"delay": 0,
+	"persist": true,
+	"status": "finished",
+	"startedAt": "2025-01-08T09:24:51.612Z",
+	"totalFail": 0,
+	"results": [
+		{
+			"id": "c7630dc4-f1eb-4ef2-95b2-8938aa9274cf",
+			"name": "Stores - Empty",
+			"url": "localhost:8080/stores",
+			"time": 4,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Creating Store Status": true
+			},
+			"testPassFailCounts": {
+				"Creating Store Status": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				4
+			],
+			"allTests": [
+				{
+					"Creating Store Status": true
+				}
+			]
+		},
+		{
+			"id": "f191ab30-bde2-41d7-8ed3-057b689a089d",
+			"name": "All Stores - not Authenticated",
+			"url": "localhost:8080/stores",
+			"time": 31,
+			"responseCode": {
+				"code": 401,
+				"name": "Unauthorized"
+			},
+			"tests": {
+				"Creating Store Status": true
+			},
+			"testPassFailCounts": {
+				"Creating Store Status": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				31
+			],
+			"allTests": [
+				{
+					"Creating Store Status": true
+				}
+			]
+		},
+		{
+			"id": "fb63d681-4653-4b76-87d7-6efbb0b55b64",
+			"name": "Store - Valid",
+			"url": "localhost:8080/stores",
+			"time": 18,
+			"responseCode": {
+				"code": 201,
+				"name": "Created"
+			},
+			"tests": {
+				"Creating Store Status": true
+			},
+			"testPassFailCounts": {
+				"Creating Store Status": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				18
+			],
+			"allTests": [
+				{
+					"Creating Store Status": true
+				}
+			]
+		},
+		{
+			"id": "0116b512-7f7c-4e71-b567-70eda853b958",
+			"name": "All Stores - Valid Size 1",
+			"url": "localhost:8080/stores",
+			"time": 2,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Creating Store Status": true
+			},
+			"testPassFailCounts": {
+				"Creating Store Status": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				2
+			],
+			"allTests": [
+				{
+					"Creating Store Status": true
+				}
+			]
+		},
+		{
+			"id": "55f1f7eb-05cc-41d6-aa8d-a8ec6c2a3955",
+			"name": "Store - Valid (another one)",
+			"url": "localhost:8080/stores",
+			"time": 18,
+			"responseCode": {
+				"code": 201,
+				"name": "Created"
+			},
+			"tests": {
+				"Creating Store Status": true
+			},
+			"testPassFailCounts": {
+				"Creating Store Status": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				18
+			],
+			"allTests": [
+				{
+					"Creating Store Status": true
+				}
+			]
+		},
+		{
+			"id": "2cbdf347-84b4-4246-9025-c56e56be781b",
+			"name": "All Stores - Valid Size 2",
+			"url": "localhost:8080/stores",
+			"time": 3,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Creating Store Status": true
+			},
+			"testPassFailCounts": {
+				"Creating Store Status": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				3
+			],
+			"allTests": [
+				{
+					"Creating Store Status": true
+				}
+			]
+		},
+		{
+			"id": "db0d25c6-6b87-4eea-9c45-cd2cb26c045a",
+			"name": "Store - Adding duplicate",
+			"url": "localhost:8080/stores",
+			"time": 4,
+			"responseCode": {
+				"code": 403,
+				"name": "Forbidden"
+			},
+			"tests": {
+				"Creating Store Status": true
+			},
+			"testPassFailCounts": {
+				"Creating Store Status": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				4
+			],
+			"allTests": [
+				{
+					"Creating Store Status": true
+				}
+			]
+		},
+		{
+			"id": "39a902e0-971e-4d7a-927d-94b9bd52c6d8",
+			"name": "Store - Getting non-existing one",
+			"url": "localhost:8080/stores/B2342",
+			"time": 16,
+			"responseCode": {
+				"code": 404,
+				"name": "Not Found"
+			},
+			"tests": {
+				"Creating Store Status": true
+			},
+			"testPassFailCounts": {
+				"Creating Store Status": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				16
+			],
+			"allTests": [
+				{
+					"Creating Store Status": true
+				}
+			]
+		},
+		{
+			"id": "bbfe5874-cd61-4c58-b269-0b72038f4178",
+			"name": "Store - Getting one (firstOne)",
+			"url": "localhost:8080/stores/B5000",
+			"time": 2,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Creating Store Status": true
+			},
+			"testPassFailCounts": {
+				"Creating Store Status": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				2
+			],
+			"allTests": [
+				{
+					"Creating Store Status": true
+				}
+			]
+		},
+		{
+			"id": "8ac739eb-d5b8-44f0-b275-a9f0a251af3e",
+			"name": "Store - Getting one (secondOne)",
+			"url": "localhost:8080/stores/B5001",
+			"time": 2,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Creating Store Status": true
+			},
+			"testPassFailCounts": {
+				"Creating Store Status": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				2
+			],
+			"allTests": [
+				{
+					"Creating Store Status": true
+				}
+			]
+		}
+	],
+	"count": 1,
+	"totalTime": 100,
+	"collection": {
+		"requests": [
+			{
+				"id": "c7630dc4-f1eb-4ef2-95b2-8938aa9274cf",
+				"method": "GET"
+			},
+			{
+				"id": "f191ab30-bde2-41d7-8ed3-057b689a089d",
+				"method": "GET"
+			},
+			{
+				"id": "fb63d681-4653-4b76-87d7-6efbb0b55b64",
+				"method": "POST"
+			},
+			{
+				"id": "0116b512-7f7c-4e71-b567-70eda853b958",
+				"method": "GET"
+			},
+			{
+				"id": "55f1f7eb-05cc-41d6-aa8d-a8ec6c2a3955",
+				"method": "POST"
+			},
+			{
+				"id": "2cbdf347-84b4-4246-9025-c56e56be781b",
+				"method": "GET"
+			},
+			{
+				"id": "db0d25c6-6b87-4eea-9c45-cd2cb26c045a",
+				"method": "POST"
+			},
+			{
+				"id": "39a902e0-971e-4d7a-927d-94b9bd52c6d8",
+				"method": "GET"
+			},
+			{
+				"id": "bbfe5874-cd61-4c58-b269-0b72038f4178",
+				"method": "GET"
+			},
+			{
+				"id": "8ac739eb-d5b8-44f0-b275-a9f0a251af3e",
+				"method": "GET"
+			}
+		]
+	}
+}

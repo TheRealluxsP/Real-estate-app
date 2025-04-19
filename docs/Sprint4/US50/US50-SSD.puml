@@ -1,0 +1,14 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+autoactivate on
+autonumber
+
+actor "Network manager" as netManager
+participant ":System" as System
+
+activate netManager
+
+netManager -> System: requests to list all deals made
+System --> netManager: shows list of all deals made
+@enduml

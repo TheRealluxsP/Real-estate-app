@@ -1,0 +1,60 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+hide circle
+skinparam ClassAttributeIconSize 0
+hide methods
+skinparam ranksep 50
+skinparam nodesep 70
+
+class Client{
+    code
+    name
+    ccNumber
+    tif
+    email
+    contactNumber
+}
+class Property{
+    area
+    location
+    distanceCenter
+}
+class Land
+
+class Residency{
+    numberBedrooms
+    numberBathrooms
+    parkingSpaces
+    avaliableEquipment
+}
+class House{
+    existenceBasement
+    habitableAttic
+    sunExposure
+}
+class Apartment
+
+class Advertisement {
+    typeBusiness
+    typeProperty
+    price
+    visibility
+}
+
+class Agent {
+  name
+  idNumber
+  email
+  contactNumber
+}
+
+Client "1" - "*" Property : owns >
+Property <|-- Land
+Property <|-- Residency
+Residency <|-- House
+Residency <|-- Apartment
+Property "1" - "1" Advertisement : has >
+Agent "1" -- "*" Advertisement : receives >
+
+@enduml

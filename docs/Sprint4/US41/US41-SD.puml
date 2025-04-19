@@ -1,0 +1,41 @@
+@startuml
+title US41: Confirm Visit Booking - System Sequence Diagram
+
+autoactivate on
+autonumber
+
+actor "Agent" as Agent
+participant ":AgentView" as UI
+participant ":VisitBookingController" as Ctrl
+participant "factory:VisitFactory" as Factory
+participant "service:VisitService" as Service
+participant "repo:VisitRepository" as Repo
+participant ":VisitMapper" as Mapper
+
+activate Agent
+
+Agent -> UI: Select booking request
+UI -> Ctrl: confirmBooking(bookingDTO)
+Ctrl -> Factory: getVisitRepository()
+Factory --> Ctrl: repo
+Ctrl -> Service: create(repo)
+Service --> Ctrl  : service
+
+Ctrl -> Mapper: toEntity(bookingDTO)
+Mapper -> "selectedVisit:Visit"**: create()
+Mapper --> Ctrl: selectedVisit
+
+Ctrl -> Service: saveBooking(selectedVisit)
+Service -> Repo: save(selectedVisit)
+Repo --> Service: success
+Service --> Ctrl: success
+
+Ctrl -> Mapper: toDTO(selectedVisit)
+Mapper -> "selectedVisitDTO:VisitDTO"**: create()
+Mapper --> Ctrl: selectedVisitDTO
+Ctrl --> UI: Booking successfully confirmed with selectedVisitDTO
+UI --> Agent: Booking confirmation with selectedVisitDTO
+
+deactivate Agent
+
+@enduml

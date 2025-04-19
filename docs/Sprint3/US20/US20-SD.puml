@@ -1,0 +1,87 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+title US20: Display listed properties
+
+autoactivate on
+autonumber
+
+actor "User" as User
+participant ":DisplayListedPropertiesView" as UI
+participant ":DisplayListedPropertiesController" as Ctrl
+participant ":Company" as Company
+participant "factory:RepositoryFactory" as Factory
+participant "service:AdvertisementService" as Service
+participant "repo:AdvertisementRepository" as Repo
+participant ":Advertisement" as Advertisement
+participant ":Property" as Property
+participant ":Residency" as Residency
+participant ":DisplayedPropertyMapper" as Mapper
+
+
+activate User
+
+User -> UI: request to display listed properties
+UI->Ctrl: getListedProperties()
+Ctrl->Company: getAdvertisementService()
+Company->Factory:getAdvertisementRepository()
+Factory-->Company: repo
+Company->Service**: create(repo)
+Company-->Ctrl: service
+Ctrl->Service:getAll()
+Service->Repo: getAll()
+Repo->"list:List<Advertisement>"**: create()
+Repo-->Service: list
+Service-->Ctrl: list
+
+Ctrl->Mapper:createDTOList()
+Mapper->"listDisplayedPropertyDTO:List<DisplayedPropertyDTO>"**:create()
+Mapper-->Ctrl:ok
+
+loop for each 'Advertisement' in list
+
+Ctrl->Advertisement: getTypeBusiness()
+Advertisement-->Ctrl: typeBusiness
+Ctrl->Advertisement: getTypeProperty()
+Advertisement-->Ctrl: typeProperty
+Ctrl->Advertisement: getPrice()
+Advertisement-->Ctrl: price
+
+Ctrl->Advertisement: getPropertyAttributes()
+Advertisement->Property:getArea()
+Property-->Advertisement:area
+Advertisement->Property:getLocation()
+Property-->Advertisement:location
+Advertisement->Property: getResidency()
+opt Property is an house or apartment
+Property->Residency: getBedrooms()
+Residency-->Property: bedrooms
+Property->Residency: getBathrooms()
+Residency-->Property: bathrooms
+Property->Residency: getParkingSpaces()
+Residency-->Property:parkingSpaces
+Property-->Advertisement:bedrooms, bathrooms,parkingSpaces
+end opt
+Advertisement-->Ctrl: area, location, bedrooms, bathrooms, parkingSpaces
+Ctrl->Mapper:toDTO(typeBusiness,typeProperty,price,area,location,bedrooms,bathrooms,parkingSpaces)
+Mapper->"displayedPropertyDTO:DisplayedPropertyDTO"**:create(typeBusiness,typeProperty,price,area,location,bedrooms,bathrooms,parkingSpaces)
+Mapper->"listDisplayedPropertyDTO": add(displayedPropertyDTO)
+deactivate
+end loop
+Mapper-->Ctrl: listDisplayedPropertyDTO
+Ctrl-->UI: listDisplayedPropertyDTO
+UI-->User: shows listed properties
+
+
+
+
+
+
+
+
+
+
+
+
+
+@enduml

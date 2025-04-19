@@ -1,0 +1,24 @@
+@startuml
+
+left to right direction
+
+hide circle
+skinparam classAttributeIconSize 0
+
+class AdvertisementController {
++postAdvertisement(typeProperty, typeBusiness, price, property, client, agent)
+}
+
+class HttpResult {
+    -status: HttpStatus
+    -result: json
+    HttpResult();
+    HttpResult(HttpStatus status);
+    HttpResult(HttpStatus status, const wstring &message);
+    HttpResult(HttpStatus status, const string &message);
+    HttpResult(HttpStatus status, const char *message);
+    HttpResult(HttpStatus status, const json &result);
+}
+
+AdvertisementController ..> HttpResult
+@enduml

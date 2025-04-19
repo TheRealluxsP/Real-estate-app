@@ -1,0 +1,17 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+title US20: Display Listed Properties
+
+autoactivate on
+autonumber
+
+actor "User" as User
+participant ":System" as System
+
+activate User
+
+User -> System: ask to display listed properties
+System --> User: shows list of properties that are displayed
+
+@enduml

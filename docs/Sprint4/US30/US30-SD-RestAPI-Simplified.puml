@@ -1,0 +1,45 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+autoactivate on
+autonumber
+
+participant ":HTTPClient" as HTTPClient
+participant "handler:RouteHandler" as System
+participant ":AdvertisementController" as Ctrl
+participant ":Company" as Company
+participant "service:AdvertisementService" as Service
+participant "factory:RepositoryFactory" as Factory
+participant "repo:AdvertisementRepository" as Repo
+participant "adv:Advertisement" as Store
+participant "result:HttpResult" as Result
+
+activate HTTPClient
+
+HTTPClient -> System: POST/stores(data)
+
+note over System: after doing some stuff
+
+System -> Ctrl: postAdvertisement(typeProperty, typeBusiness,\n price, property, client, agent)
+Ctrl -> Company: getAdvertisementService()
+Company -> Factory : getAdvertisementRepository()
+Factory --> Company: repo
+Company -->Service**: create(repo)
+Company --> Ctrl: service
+Ctrl -> Service: create(typeProperty, typeBusiness,\n price, property, client, agent)
+Service --> Store**: create(typeProperty, typeBusiness,\n price, property, client, agent)
+Service --> Ctrl: adv
+Ctrl -> Service: addOrUpdate(adv)
+Service -> Service : validate(adv)
+Service --> Service : ok
+Service -> Repo: save(adv)
+Repo --> Service : ok
+Service --> Ctrl: ok
+Ctrl --> Result**: create(201)
+Ctrl --> System: result
+System -> System: setHttpResult(resp, result)
+System --> System:
+System --> HTTPClient: resp
+
+
+@enduml

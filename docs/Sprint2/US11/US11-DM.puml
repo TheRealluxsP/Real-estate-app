@@ -1,0 +1,36 @@
+@startuml
+'https://plantuml.com/class-diagram
+hide circle
+skinparam classAttributeIconSize 0
+hide methods
+
+title System administrator registers agent
+
+class Administrator {
+}
+
+class Agent{
+    name
+    idNumber
+    email
+    contactNumber
+}
+
+class Store{
+    code
+    designation
+    address
+    openingTime
+    closingTime
+}
+
+class Company{
+
+}
+
+Administrator "1" -up- "1..*" Agent: registers >
+Store "1" -left- "1..*" Agent: has >
+Company "1" -down- "1..*" Store: owns >
+Administrator "1"- "1..*" Store: registers >
+
+@enduml

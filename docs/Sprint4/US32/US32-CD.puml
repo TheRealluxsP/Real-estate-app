@@ -1,0 +1,96 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+hide circle
+skinparam classAttributeIconSize 0
+
+title US32: Class Diagram
+
+
+class PurchaseOfferView{
+}
+
+class PurchaseOfferController{
++getAdvByCode(code: string)
++createOffer(value: float)
+}
+
+class Company{
++getAdvertisementService()
++getPurchaseOfferService()
+}
+
+interface RepositoryFactory <<interface>>{
++getAdvertisementRepository()
++getPurchaseOfferRepository()
+}
+
+interface AdvertisementRepository <<interface>>{
++getById(code: string)
+}
+
+class AdvertisementService{
++create(advRepo)
++getAdvertisement(code: string)
+}
+
+class PurchaseOfferService{
++create(purchaseOfferRepo
++validate(purchaseOffer)
++createPurchaseOffer(value: float, adv: Advertisement)
++save(purchaseOffer)
+}
+
+class PurchaseOffer{
+-value: float
+-<shared_ptr>Advertisement : Advertisement
++create(value: float,adv: Advertisement)
+}
+
+interface PurchaseOfferRepository <<interface>>{
++save(purchaseOffer)
+}
+
+class Advertisement {
+ -typeProperty: string
+    -typeBusiness: string
+    -price:float
+    -property:Property
+    -client:Client
+    -agent:Agent
+    -isSold: bool
+    -isVisible: bool
+    -comission: float
+    Advertisement(typeProperty: string, typeBusiness: string,\n price: float, property: Property, client: Client, agent: Agent)
+}
+
+
+
+
+
+
+
+
+
+
+PurchaseOfferView..>PurchaseOfferController
+PurchaseOfferController..>Company
+PurchaseOfferController ..> AdvertisementService
+Company ..> RepositoryFactory
+Company ..> AdvertisementService
+AdvertisementService ..> AdvertisementRepository
+Company ..> PurchaseOfferService
+PurchaseOfferController..>PurchaseOfferService
+PurchaseOfferService ..> PurchaseOffer
+PurchaseOfferService ..> PurchaseOfferRepository
+RepositoryFactory ..> AdvertisementRepository
+RepositoryFactory ..> PurchaseOfferRepository
+PurchaseOfferRepository "1" ---> "1..*" PurchaseOffer: has >
+PurchaseOffer "0..*" --->  "1" Advertisement: has <
+AdvertisementRepository "1" -> "0..*"Advertisement: has >
+
+
+
+
+
+@enduml

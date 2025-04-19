@@ -1,0 +1,19 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+title US32: Place an order to property purchase/lease
+
+autoactivate on
+autonumber
+
+actor "Client" as User
+participant ":System" as System
+
+activate User
+
+User -> System: selects property to purchase/lease
+System--> User: asks value of offer
+User-> System: inputs value of offer
+System --> User: informs operation success
+
+@enduml

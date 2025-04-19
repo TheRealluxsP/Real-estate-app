@@ -1,0 +1,23 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+title System Sequence Diagram for US21: Client Registration
+
+autoactivate on
+autonumber
+
+actor "Administrator" as User
+participant ":System" as System
+
+activate User
+
+User -> System: ask to register client
+System --> User: shows list of clients and asks for client details
+
+User -> System: selects client
+System --> User: asks for details of client to be registered
+
+User -> System: inputs details of client
+System-->User: Returns success of operation
+
+@enduml

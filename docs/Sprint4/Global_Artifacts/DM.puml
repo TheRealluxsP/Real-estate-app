@@ -1,0 +1,127 @@
+@startuml
+
+hide circle
+skinparam ClassAttributeIconSize 0
+hide methods
+skinparam ranksep 50
+skinparam nodesep 70
+
+title Domain Model of DreamHouse Application
+
+class Company {
+  name
+}
+
+class Store {
+  code
+  designation
+  address
+  openingTime
+  closingTime
+  revenue
+}
+
+class Administrator {}
+
+class Agent {
+  name
+  idNumber
+  email
+  contactNumber
+}
+
+class Client {
+  code
+  name
+  ccNumber
+  tif
+  email
+  contactNumber
+}
+
+class Property {
+  area
+  location
+  distanceCenter
+}
+
+class Visit {
+  selectedDate
+}
+
+class Date {
+  date
+  time
+}
+
+class Commission {
+  value
+  isPercentageValue
+}
+
+class Advertisement {
+  typeBusiness
+  typeProperty
+  price
+  visibility
+  isSold
+}
+
+class PurchaseOffer {
+  value
+}
+
+class PropertyPurchaseOrder {
+  orderId
+  orderDate
+  status
+  isEvaluated
+}
+
+class Land {}
+
+class Residency {
+  numberBedrooms
+  numberBathrooms
+  parkingSpaces
+  availableEquipment
+}
+
+class House {
+  existenceBasement
+  habitableAttic
+  sunExposure
+}
+
+class Apartment {}
+
+class NetworkManager{}
+
+
+Company "1" -left- "*" Store : owns >
+NetworkManager "1" -right- "*" Agent : views >
+Administrator "1" -right- "*" Store : registers >
+Administrator "1" -down- "*" Agent : registers >
+Store "1" -up- "*" Agent : has >
+Agent "1" -left- "1" Commission : defines >
+Agent "1" -left- "*" Advertisement : receives >
+Agent "1" -down- "*" PropertyPurchaseOrder : evaluates >
+
+Advertisement "*" --down- "1" Commission : has >
+Advertisement "1" -left- "*" PurchaseOffer : has >
+Property "1" -down- "1" Advertisement : has <
+PropertyPurchaseOrder "1" -down- "1" Property : involves >
+
+Visit "*" -down- "1" Property : receives <
+Client "1" -down- "*" Property : owns >
+Client "1" -left- "*" PurchaseOffer : makes >
+Client "1" -right- "*" Visit : requests >
+Visit "1" -down- "*" Date : has >
+
+
+Property <|-- Land
+Property <|-- Residency
+Residency <|-- House
+Residency <|-- Apartment
+
+@enduml

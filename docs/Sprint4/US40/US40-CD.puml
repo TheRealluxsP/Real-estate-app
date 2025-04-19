@@ -1,0 +1,91 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+hide circle
+skinparam classAttributeIconSize 0
+
+title Updated Class Diagram for Publishing Advertisement (Sale or Rent) with Design Patterns
+
+' Domain Classes
+class Agent {
+    - name: String
+    - idNumber: String
+    - email: String
+    - contactNumber: String
+}
+
+class Advertisement {
+    - typeBusiness: String
+    - typeProperty: String
+    - price: Float
+    - isSold: bool
+    - visibility: bool
+    + markAsPublished(): void
+}
+
+class Property {
+    - area: Double
+    - location: String
+    - distanceCenter: Double
+}
+
+' Repository Pattern
+class AdvertisementRepository {
+    - advertisements: List<Advertisement>
+    + findUnpublishedByAgent(agentId: String): List<AdvertisementDTO>
+    + save(ad: Advertisement): Boolean
+}
+
+' Repository Factory
+class RepositoryFactory {
+    + getAdvertisementRepository(): AdvertisementRepository
+}
+
+' Service Layer
+class AdvertisementService {
+    + getUnpublishedByAgent(agentId: String): List<Advertisement>
+    + publishAdvertisement(ad: Advertisement): Boolean
+}
+
+' Mapper Classes
+class AdvertisementMapper {
+    + toDTO(ad: Advertisement): AdvertisementDTO
+    + toEntity(dto: AdvertisementDTO): Advertisement
+}
+
+class PropertyMapper {
+    + toDTO(property: Property): PropertyDTO
+    + toEntity(dto: PropertyDTO): Property
+}
+
+' Controller
+class PublishAdvertisementController {
+    + retrieveAdvertisements(agentId: String): List<AdvertisementDTO>
+    + publishAdvertisement(adDTO: AdvertisementDTO): Boolean
+}
+
+' Company
+class Company {
+    + getAdvertisementService(): AdvertisementService
+    + create(): void
+}
+
+' View Layer
+class AgentView {
+}
+
+' Relationships
+AgentView ..> PublishAdvertisementController
+PublishAdvertisementController ..> RepositoryFactory
+PublishAdvertisementController ..> AdvertisementService
+PublishAdvertisementController ..> AdvertisementMapper
+PublishAdvertisementController ..> PropertyMapper
+Company ..> RepositoryFactory
+Company ..> AdvertisementService
+AdvertisementRepository ..> RepositoryFactory
+AdvertisementRepository "1" -- "0..*" Advertisement : manages
+Advertisement "1" --right-- "1" Property : has
+Advertisement "1" --left-- "1" Agent : chooses
+
+
+@enduml

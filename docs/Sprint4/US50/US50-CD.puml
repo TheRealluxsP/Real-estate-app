@@ -1,0 +1,78 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+hide circle
+skinparam classAttributeIconSize 0
+
+class ListDealsView{}
+
+class ListDealsController{
+    +getAllDealsGroupedByStore()
+}
+
+class Company{
+    +getAdvertisementService()
+}
+
+interface RepositoryFactory <<interface>> {
+    +getAdvertisementRepository()
+}
+
+class AdvertisementService{
+    +getAllDealsMade(): List<Advertisement>
+    +getAllDealsGroupedByStore(List<AdvertisementDTO>): Map<StoreDTO, Map<typeBusiness, List<AdvertisementDTO>>>
+}
+
+interface AdvertisementRepository <<interface>> {
+    +getAll()
+}
+
+class AdvertisementMapper{
+    +toDTO(List<Advertisement>): List<AdvertisementDTO>
+}
+
+class Advertisement{
+    -typeProperty: string
+    -typeBusiness: string
+    -price:float
+    -property:Property
+    -client:Client
+    -agent:Agent
+    -isSold: bool
+    -comission: float
+}
+
+class Agent{}
+
+class StoreMapper{
+    +toDTO(store: Store): StoreDTO
+}
+
+class PropertyMapper{
+    +toDTO(property: Property): PropertyDTO
+}
+
+class Store{}
+
+
+
+ListDealsView ..> ListDealsController
+ListDealsController ..> Company
+ListDealsController ..> AdvertisementService
+ListDealsController ..> Advertisement
+ListDealsController ..> AdvertisementMapper
+AdvertisementMapper ..> PropertyMapper
+AdvertisementMapper ..> StoreMapper
+Company  ->  AdvertisementService: adopts
+Company "1" --> "1" RepositoryFactory: uses
+RepositoryFactory .right.> AdvertisementRepository
+AdvertisementService ..> AdvertisementRepository
+AdvertisementService ..> Advertisement
+AdvertisementRepository "1" -> "*" Advertisement: records
+AdvertisementMapper ..> Advertisement
+StoreMapper ..> Store
+Advertisement ..> Agent
+Advertisement .> Store
+AdvertisementMapper .> Store
+
+@enduml

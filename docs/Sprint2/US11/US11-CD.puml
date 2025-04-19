@@ -1,0 +1,68 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+hide circle
+skinparam classAttributeIconSize 0
+
+title Class Diagrams Of Register Agent User Case
+
+class RegisterAgentUI {
+
+}
+
+class RegisterAgentController {
+    +registerAgent(string name, string email, unsigned int phoneNumber)
+}
+
+class Agents {
+    +createAgent(string name,string email,unsigned int phoneNumber)
+}
+
+class StoreContainer {
+    +getAll()
+}
+
+class Company{
+    +getStoreContainer()
+}
+
+class Agent {
+    -id
+    -name
+    -email
+    -phoneNumber
+    +Agent(name,email,phoneNumber)
+}
+
+class Store {
+    -code
+    -designation
+    -address
+    -openingTime
+    -closingTime
+    +getAgentContainer()
+}
+
+
+RegisterAgentUI ..> RegisterAgentController
+
+RegisterAgentController ..> Company
+
+RegisterAgentController ..> StoreContainer
+
+RegisterAgentController ..> Store
+
+RegisterAgentController ..> Agents
+
+Company -> StoreContainer: maintains
+
+StoreContainer "1" -> "1..*" Store: contains
+
+Store -> Agents: maintains
+
+Agents "1" -down-> "1..*" Agent: contains
+
+
+
+
+@enduml

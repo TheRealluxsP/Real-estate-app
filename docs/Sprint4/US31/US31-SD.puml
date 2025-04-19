@@ -1,0 +1,41 @@
+@startuml
+title US31: Schedule Visit Booking - System Sequence Diagram
+
+autoactivate on
+autonumber
+
+actor "Client" as Client
+participant ":ClientView" as UI
+participant ":VisitBookingController" as Ctrl
+participant "factory:VisitFactory" as Factory
+participant "service:VisitService" as Service
+participant "repo:VisitRepository" as Repo
+participant ":VisitMapper" as Mapper
+
+activate Client
+
+Client -> UI: Select date
+UI -> Ctrl: confirmDate(dateDTO)
+Ctrl -> Factory: getVisitRepository()
+Factory --> Ctrl: repo
+Ctrl -> Service: create(repo)
+Service --> Ctrl: service
+
+Ctrl -> Mapper: toEntity(dateDTO)
+Mapper -> "selectedDate:Date"**: create()
+Mapper --> Ctrl: selectedDate
+
+Ctrl -> Service: saveVisit(selectedDate)
+Service -> Repo: save(selectedDate)
+Repo --> Service: success
+Service --> Ctrl: success
+
+Ctrl -> Mapper: toDTO(selectedDate)
+Mapper -> "selectedDateDTO:DateDTO"**: create()
+Mapper --> Ctrl: selectedDateDTO
+Ctrl --> UI: Booking successfully registered with selectedDateDTO
+UI --> Client: Booking confirmation with selectedDateDTO
+
+deactivate Client
+
+@enduml

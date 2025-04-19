@@ -1,0 +1,53 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+hide circle
+skinparam classAttributeIconSize 0
+
+title Class Diagram for US21: Client Registration
+
+class ClientView {
+}
+
+class RegistrationController {
+    +registerClient(string citizenCardNumber, string phoneNumber, string name, string email, string TIF)
+}
+
+class ClientContainer {
+    +createClient(string citizenCardNumber, string phoneNumber, string name, string email, string TIF, int internalCode)
+}
+
+class Client {
+    -username : String
+    -email : String
+    -password : String
+    -name : String
+    -address : String
+    -nif : Integer
+    -contactNumber : String
+    -internalCode : Integer
+    +Client(string username, string email, string password, string name, string address, int nif, string contactNumber, int internalCode)
+}
+
+class Store {
+    -code : String
+    -designation : String
+    -address : String
+    -openingTime : String
+    -closingTime : String
+    +getClientContainer()
+}
+
+ClientView ..> RegistrationController
+
+RegistrationController ..> ClientContainer
+
+RegistrationController ..> Store
+
+RegistrationController ..> Client
+
+Store "1" -> "1" ClientContainer : maintains
+
+ClientContainer "1" -> "1..*" Client : contains
+
+@enduml

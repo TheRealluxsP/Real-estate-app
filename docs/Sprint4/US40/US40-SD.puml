@@ -1,0 +1,63 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+title US40: Publish Advertisement
+
+autoactivate on
+autonumber
+
+actor "Agent" as User
+participant ":AgentView" as View
+participant ":PublishAdvertisementController" as Ctrl
+participant ":Company" as Company
+participant "factory:RepositoryFactory" as Factory
+participant "service:AdvertisementService" as Service
+participant "repo:AdvertisementRepository" as Repo
+participant ":Advertisement" as Advertisement
+participant ":AdvertisementMapper" as Mapper
+
+activate User
+
+' Step 1: Retrieve unpublished advertisements
+User -> View: Request unpublished advertisements
+View -> Ctrl: retrieveAdvertisements(agentId)
+Ctrl -> Company: getAdvertisementService()
+Company -> Factory: getAdvertisementRepository()
+Factory --> Company: repo
+Company -> Service**: create(repo)
+Company --> Ctrl: service
+Ctrl -> Service: getUnpublishedByAgent(agentId)
+Service -> Repo: findUnpublishedByAgent(agentId)
+
+' Loop through unpublished advertisements
+loop For each unpublished advertisement
+    Repo --> Service: Advertisement (isSold: false)
+    Repo --> Service: Advertisement (Visibility: false)
+end loop
+Service --> Ctrl: List of Advertisement Entities
+
+Ctrl -> Mapper: toDTOList(advertisementEntities)
+Mapper --> Ctrl: List<AdvertisementDTO>
+Ctrl --> View: List of AdvertisementDTOs
+View --> User: Display advertisements
+
+' Step 2: Select an advertisement to publish
+User -> View: Select an advertisement
+View -> Ctrl: publishAdvertisement(adDTO)
+Ctrl -> Mapper: toEntity(adDTO)
+Mapper --> Ctrl: Advertisement
+
+' Optional (if condition): Advertisement meets criteria
+opt If advertisement meets criteria
+    Ctrl -> Service: publishAdvertisement(Advertisement)
+    Service -> Advertisement: markAsPublished()
+    Advertisement -> Repo: save(ad)
+    deactivate Advertisement
+    Repo --> Service: confirmation
+end opt
+
+Service --> Ctrl: success
+Ctrl --> View: Publication success message
+View --> User: Display confirmation
+
+@enduml

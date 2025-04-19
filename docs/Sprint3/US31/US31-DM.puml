@@ -1,0 +1,38 @@
+@startuml
+'https://plantuml.com/class-diagram
+hide circle
+skinparam classAttributeIconSize 0
+hide methods
+
+title Domain Model for US31 - Schedule Visit Booking
+
+class Property {
+  -
+  - location: String
+  - type: String
+}
+
+class Client {
+  - code: Integer
+  - name: String
+  - email: String
+  - contactNumber: String
+}
+
+class Visit {
+  - visitId: Integer
+  - date: Date
+  - hour: Time
+  - status: Enum
+}
+
+class Date {
+  - date: Date
+  - hour: Time
+}
+
+Property "1" -- "0..*" Visit : receives
+Client "1" -- "1..3" Visit : requests
+Visit "1" -- "1..*" Date : occurs on
+
+@enduml

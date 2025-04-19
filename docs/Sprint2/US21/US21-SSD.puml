@@ -1,0 +1,26 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+title System Sequence Diagram for US21: Client Registration
+
+autoactivate on
+autonumber
+
+actor "Unregistered User" as User
+participant ":ClientView" as View
+participant ":RegistrationController" as Ctrl
+participant ":System" as System
+participant ":Client" as Client
+
+activate User
+
+User -> View: Register new client (username, email, password, name, address, nif, contactNumber)
+View -> Ctrl: registerClient(username, email, password, name, address, nif, contactNumber)
+Ctrl -> System: generateInternalCode()
+System --> Ctrl: internalCode
+Ctrl -> Client: storeClient(username, email, password, name, address, nif, contactNumber)
+Client --> Ctrl: confirmation
+Ctrl --> View: registration response
+View --> User: Registration confirmation with generated internalCode
+
+@enduml

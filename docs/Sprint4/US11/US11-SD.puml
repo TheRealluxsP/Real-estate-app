@@ -1,0 +1,63 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+title US11: Register a New Agent
+
+autoactivate on
+autonumber
+
+actor "Administrator" as User
+participant ":RegisterAgentView" as UI
+participant ":RegisterAgentController" as Ctrl
+participant ":Company" as Company
+participant "factory:RepositoryFactory" as factory
+participant "service:StoreService" as Service
+participant "storeRepo: StoreRepository" as storeRepo
+participant "store:Store" as Store
+participant "agents:Agents" as agentContainer
+participant "agent: Agent" as Agent
+
+activate User
+
+
+
+User -> UI: request to register agent
+UI -> Ctrl: getAllStores()
+Ctrl-> Company: getStoreService()
+Company -> factory: getRepositoryFactory()
+factory --> Company: storeRepo
+Company ->"Service"**: create(storeRepo)
+Company -->Ctrl: service
+Ctrl -> Service: getAll()
+Service -> storeRepo: getAll()
+storeRepo --> Service: storeList
+Service-->Ctrl: storeList
+Ctrl --> UI: storeList
+UI--> User: shows all existing stores and \n asks to select the store where \n the agent is to be registered
+User-> UI: types store code where agent \n is registered
+UI-> Ctrl: getStoreByCode(code)
+Ctrl -> Service: getById(code)
+Service -> storeRepo: getById(code)
+storeRepo--> Service: store
+Service -->Ctrl: store
+Ctrl--> UI: store
+UI --> User: requests agent data
+User -> UI: types requested data
+UI -> Ctrl: registerAgent(name,email,phoneNumber,idNumber,store)
+Ctrl -> Store: getAgents()
+Store --> Ctrl: agents
+Ctrl -> agentContainer: createAgent(name,email,phoneNumber,idNumber,store)
+agentContainer --> Agent**: create(name,email,phoneNumber,idNumber,store)
+agentContainer -> agentContainer: validate(agent)
+agentContainer --> agentContainer: ok
+agentContainer -> agentContainer: add(agent)
+agentContainer --> agentContainer: ok
+agentContainer --> Ctrl: ok
+Ctrl --> UI: ok
+UI --> User: return success
+
+
+
+
+
+@enduml

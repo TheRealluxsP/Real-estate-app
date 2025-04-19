@@ -1,0 +1,54 @@
+@startuml
+hide circle
+skinparam classAttributeIconSize 0
+
+title Class Diagram for US41 - Confirm Visit Booking
+
+class Agent {
+  - name: String
+  - idNumber: String
+  - email: String
+  - contactNumber: String
+}
+
+class Visit {
+  - visitId: Integer
+  - selectedDate: Date
+  - status: String
+}
+
+class VisitRepository {
+  + save(Visit)
+}
+
+class VisitFactory {
+  + getVisitRepository(): VisitRepository
+}
+
+class VisitService {
+  - repository: VisitRepository
+  + saveBooking(Visit)
+  + create(repo: VisitRepository)
+}
+
+class VisitBookingController {
+  - service: VisitService
+  + confirmBooking(bookingDTO: VisitDTO)
+}
+
+class VisitMapper {
+  + toDTO(Visit): VisitDTO
+  + toEntity(VisitDTO): Visit
+}
+
+class AgentView {
+}
+
+AgentView ..> VisitBookingController
+VisitBookingController ..> VisitMapper
+VisitBookingController ..> VisitService
+VisitService ..> VisitRepository
+VisitRepository "1" --> "0..*" Visit : stores
+Visit "1" --right--> "1" Agent : confirmed
+VisitService ..> VisitFactory
+@enduml

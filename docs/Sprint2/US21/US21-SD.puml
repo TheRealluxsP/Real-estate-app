@@ -1,0 +1,44 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+title US21: Register a New Client
+
+autoactivate on
+autonumber
+
+actor "Unregistered User" as User
+participant ":ClientView" as View
+participant ":RegistrationController" as Ctrl
+participant ":Company" as Admin
+participant "container:ClientContainer" as clientContainer
+participant "client: Client" as Client
+
+activate User
+
+User -> View: request to register new client
+View -> Ctrl: registerClient(citizenCardNumber, phoneNumber, name, email, TIF)
+
+' Controller requests a unique internal code for the new client
+Ctrl -> Admin: getClientContainer()
+Admin --> Ctrl: clientContainer
+
+
+' Client container generates an internal code
+' Ctrl -> clientContainer: generateInternalCode()
+' clientContainer --> Ctrl: internalCode
+
+' Controller stores the new client data in the client container
+Ctrl -> clientContainer: storeClient(username, email, password, name, address, nif, contactNumber)
+clientContainer --> Client **: addClient(username, email, password, name, address, nif, contactNumber)
+clientContainer --> Ctrl: confirmation
+clientContainer -> clientContainer: validate(client)
+clientContainer --> clientContainer: ok
+clientContainer -> clientContainer: add(client)
+clientContainer --> clientContainer: ok
+clientContainer --> Ctrl: ok
+
+' Return response to the user
+Ctrl --> View: registration response
+View --> User: registration confirmation with internalCode
+
+@enduml

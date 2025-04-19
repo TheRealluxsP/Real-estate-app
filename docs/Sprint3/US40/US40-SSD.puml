@@ -1,0 +1,21 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+title Sequence Diagram for Publishing Advertisement
+
+autoactivate on
+autonumber
+
+actor "Agent" as User
+participant ":System" as System
+
+activate User
+
+User -> System: Request unpublished advertisements
+System --> User: List of unpublished advertisements
+
+User -> System: Select an advertisement to publish
+System -> System: Mark advertisement as published
+System --> User: Confirmation of publication
+
+@enduml

@@ -1,0 +1,96 @@
+@startuml
+
+hide circle
+skinparam ClassAttributeIconSize 0
+hide methods
+skinparam ranksep 100
+skinparam nodesep 120
+
+title Domain Model of DreamHouse application
+
+class Company {
+  name
+}
+
+class Manager{}
+
+class Branch {
+  code
+  designation
+  address
+  opening/closing time
+}
+
+
+
+class Agent {
+  name
+  idNumber
+  email
+  contactNumber
+  branchCode
+}
+class Client {
+  code
+  name
+  ccNumber
+  tif
+  email
+  contactNumber
+}
+
+class Property {
+  type
+  area
+  location
+  distanceCenter
+  price
+  ownerId
+}
+
+class Visit {
+  date
+}
+
+class Commission {
+  value
+}
+
+class Owner {
+  code
+  name
+  ccNumber
+  tif
+  email
+  contactNumber
+}
+
+class PurchaseOffer {
+ type
+}
+
+class SellOffer {
+ type
+}
+
+Company "1" -down- "1..*" Branch : owns >
+Manager "1" -right- "1..*" Branch :registers >
+Manager "1" -down- "1..*" Agent : registers >
+Branch "1" -down- "1..*" Agent : has >
+Agent "1" -left- "1" Commission : defines >
+Agent "1" -up- "1..*" Visit : schedules >
+Agent "1" -left- "1..*" SellOffer : receives >
+
+
+Property "1" --down- "1" Commission : has >
+Property "1" -left- "0..*" PurchaseOffer : has >
+Property "1" -down- "1" SellOffer : has >
+
+Visit "*" -down- "1" Property : receives <
+Client "1" -down- "1..*" Property: consults >
+Client "1" -down- "1..*" PurchaseOffer : makes >
+Client "1" -right- "1..*" Visit: requests >
+Owner "1" -down- "0..*" SellOffer : makes >
+Owner "1" -left- "0..*" Property : owns >
+
+@enduml

@@ -1,0 +1,143 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+autoactivate on
+autonumber
+
+actor "Client" as Client
+participant ":ListPropertyView" as UI
+participant ":ListPropertyController" as Ctrl
+participant ":Land" as land
+participant ":LandMapper" as landMapper
+participant "dto:LandDTO" as landDTO
+participant "land:Land" as landObj
+participant ":Apartment" as apartment
+participant ":ApartmentMapper" as apartmentMapper
+participant "dto:ApartmentDTO" as apartmentDTO
+participant "apartment:Apartment" as apartmentObj
+participant ":House" as house
+participant ":HouseMapper" as houseMapper
+participant "dto:HouseDTO" as houseDTO
+participant "house:House" as houseObj
+participant ":Company" as Company
+participant "factory:RepositoryFactory" as Factory
+participant "agentService:AgentService" as agentService
+participant "agentRepo:AgentRepository" as agentRepo
+participant ":AgentMapper" as agentMapper
+participant "agentListDTO:List<AgentDTO>" as agentListDTO
+participant "agentList:List<Agent>" as agentList
+participant "agentDTO:AgentDTO" as agentDTO
+participant "advService:AdvertisementService" as advService
+participant ":Advertisement" as adv
+participant "advRepo:AdvertisementRepository" as advRepo
+
+
+
+activate Client
+
+Client -> UI: requests to list a property
+UI --> Client: asks for property data
+
+Client -> UI: types requested data (typeProperty, typeBusiness,\narea, location, distance, price, photograph)
+UI -> Ctrl: createLand(dto)
+Ctrl -> land: obj = create(dto)
+land -> landMapper: obj = toModel(dto)
+deactivate land
+landMapper -> landDTO: area = getArea()
+note over landDTO: more options must be handled too
+deactivate
+landMapper -> landDTO: photograph = getPhotograph()
+deactivate
+landMapper -> landObj**: create(area, location, distance, price, photograph)
+deactivate landMapper
+
+
+opt Property is an apartment or house
+Client -> UI: types requested data (bedrooms,\n bathrooms, parkingSpaces, availableEquipment)
+UI -> Ctrl: createApartment(dto)
+Ctrl -> apartment: obj = create(dto)
+apartment -> apartmentMapper: obj = toModel(dto)
+deactivate apartment
+apartmentMapper -> apartmentDTO: area = getArea()
+note over apartmentDTO: more options must be handled too
+deactivate
+apartmentMapper -> apartmentDTO: availableEquipment = getEquipment()
+deactivate
+apartmentMapper -> apartmentObj**: create(area, location, distance, price, photograph, bedrooms, bathrooms, parkingSpaces, availableEquipment)
+deactivate apartmentMapper
+
+
+opt Property is a house
+Client -> UI: selects requested data (basement, attic, sunExposure)
+
+UI -> Ctrl: createHouse(dto)
+Ctrl -> house: obj = create(dto)
+house -> houseMapper: obj = toModel(dto)
+deactivate house
+houseMapper -> houseDTO: area = getArea()
+note over houseDTO: more options must be handled too
+deactivate
+houseMapper -> houseDTO: sunExposure = getSunExposure()
+deactivate
+houseMapper -> houseObj**: create(area, location, distance, price, photograph, bedrooms, bathrooms, parkingSpaces, availableEquipment, basement, attic, sunExposure)
+deactivate houseMapper
+
+end opt
+end opt
+
+Ctrl -> Company: getAgentService()
+Company -> Factory: getAgentRepository()
+Factory --> Company: agentRepo
+Company -> agentService**: create(agentRepo)
+Company --> Ctrl: agentService
+
+Ctrl -> agentService: getAll()
+agentService -> agentRepo: getAll()
+agentRepo -> agentList**: create()
+agentRepo --> agentService: list
+agentService --> Ctrl: list
+
+Ctrl -> agentMapper: toDTO(list)
+agentMapper -> agentListDTO**: create()
+
+loop for each agent in list
+agentMapper -> agentList: agent = get(i)
+agentMapper -> agentMapper: agentDTO = toDTO(agent)
+deactivate agentList
+agentMapper -> agentDTO**: create(...)
+deactivate agentMapper
+agentMapper -> agentListDTO: add(agentDTO)
+deactivate
+end loop
+
+agentMapper --> Ctrl: agentListDTO
+Ctrl --> UI: agentListDTO
+UI --> Client: shows list of agents
+
+Client -> UI: chooses an id
+UI -> Ctrl: getAgentById(id)
+Ctrl -> agentRepo: getAgentById(id)
+agentRepo --> Ctrl: agent
+
+Ctrl->Company: getAdvertisementService()
+Company->Factory:getAdvertisementRepository()
+Factory-->Company: repo
+Company->advService**: create(repo)
+Company-->Ctrl: service
+
+Ctrl -> advService: createAdv(TypeProperty, TypeBusiness, price, obj)
+advService -> adv: create(TypeProperty, TypeBusiness, price, obj)
+deactivate
+
+advService --> Ctrl: adv
+Ctrl -> advService: save(adv)
+advService -> advService: validate(adv)
+advService --> advService: ok
+advService -> advRepo: save(adv)
+advRepo --> advService: ok
+
+advService --> Ctrl: ok
+Ctrl --> UI: ok
+UI --> Client: ok
+
+@enduml

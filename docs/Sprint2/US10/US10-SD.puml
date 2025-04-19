@@ -1,0 +1,33 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+autoactivate on
+autonumber
+
+actor "Administrator" as User
+participant ":RegisterStoreView" as System
+participant ":RegisterStoreController" as Ctrl
+participant ":Company" as Company
+participant ":container:StoreContainer" as Container
+participant ":store:Store" as Store
+
+activate User
+
+User -> System: asks to register a store
+System --> User: requests data (code, designation,\n address, openingTime, closingTime)
+
+User -> System: types requested data
+System -> Ctrl: registerStore(code, designation,\n address, openingTime, closingTime)
+Ctrl -> Company: getStoreContainer()
+Company --> Ctrl: container
+Ctrl -> Container: createStore(code, designation,\n address, openingTime,\n closingTime)
+Container --> Store**: create(code, designation,address,\n openingTime, closingTime)
+Container -> Container: validate(store)
+Container --> Container: ok
+Container -> Container: add(store)
+Container --> Container: ok
+Container --> Ctrl: ok
+Ctrl --> System: ok
+System --> User: informs operation success
+
+@enduml
