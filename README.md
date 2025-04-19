@@ -12,3 +12,5 @@ The Dream House Management System (DHMS) project is just an umbrella to the othe
 - Core should be a **library** where the domain logic and entities reside;
 - CoreTests should have a set of regression tests over the Core classes;
 - ConsoleApp should be an executable console application providing a basic User Interface (UI) allowing users to perform some application domain functionalities.
+
+💡 Note: The project was initially hosted on a university account. After completion, it was migrated to this personal repository — hence the single commit history.
